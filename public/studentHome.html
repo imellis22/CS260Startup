@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Tell browsers not to scale the viewport automatically -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Got it?</title>
+    <!-- <link rel="icon" href="favicon.ico" /> -->
+
+    <link rel="stylesheet" href="main.css" />
+
+    <!-- Include bootstrap CSS framework -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+      crossorigin="anonymous"
+    />
+
+    <body class="bg-light">
+        <header class="container-fluid">
+          <nav class="navbar fixed-top navbar-dark">
+            <a class="navbar-brand" href="#" id="studentName"></a>
+            <menu class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" href="support.html">Contact Us</a>
+              </li>
+            </menu>
+            <div class="text-end">
+              <a class="nav-link" href="index.html">
+                 <button type="button" class="btn me-2 logout-btn">Logout</button>
+              </a>
+            </div>
+          </nav>
+        </header>
+        
+        <main id="main-page">
+          <div class="split  student-view">
+            <div class="column">
+              <button onmouseover="boldBorder(this)" onmouseleave="noBorder(this)"  type="button" class="btn student-good"> Good </button>
+            </div>
+            <div class="column">
+              <button onmouseover="boldBorder(this)" onmouseleave="noBorder(this)" type="button" class="btn student-okay"> Okay </button>
+            </div>
+            <div class="column">
+              <button onmouseover="boldBorder(this)" onmouseleave="noBorder(this)" type="button" class="btn student-bad"> Bad </button>
+            </div>
+          </div>
+          <form style="width: 50%;">
+            <div>
+              <input type="text" class="question-form" placeholder="Enter your question here!" />
+            </div>
+            <div style="display: flex; justify-content: center;">
+              <button type="submit" class="btn btn-primary" id="question-btn">Submit</button>
+            </div>
+          </form>
+        </main>
+        <footer class="text-light">
+            <div class="container-fluid">
+              <span class="text-reset">Isaac Ellis</span>
+              <a
+                class="text-reset"
+                href="https://github.com/imellis22/CS260"
+                >Source</a
+              >
+            </div>
+        </footer>
+        <script src="studentHome.js"></script>
+    </body>
