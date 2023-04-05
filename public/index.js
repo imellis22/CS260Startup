@@ -27,6 +27,7 @@ function registerTeacher(){
 async function registerStudent() {
     const nameEl = document.querySelector("#studentName");
     const passwordEl = document.querySelector("#password");
+    localStorage.setItem("studentName", nameEl.value);
     let newStudent =
     {
         username: nameEl,
@@ -39,4 +40,6 @@ async function registerStudent() {
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify(newStudent),
     })
+
+    window.location.href = "studentHome.html";
 }

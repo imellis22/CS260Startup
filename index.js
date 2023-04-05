@@ -26,7 +26,7 @@ apiRouter.get('/student/:id', async (_req, res) => {
 
 // Submit a single student
 apiRouter.post('/student', async (req, res) => {
-  if (await DB.getUser(req.body.email)) {
+  if (await DB.getStudent(req.body.email)) {
     res.status(409).send({ msg: 'Existing user' });
   } else{
     added = DB.addStudnet(req.body);
