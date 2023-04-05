@@ -1,5 +1,6 @@
 const {MongoClient} = require('mongodb');
-const ObjectId = require('mongodb').ObjectId;
+const bcrypt = require('bcrypt');
+const uuid = require('uuid');
 
 const userName = process.env.MONGOUSER;
 const password = process.env.MONGOPASSWORD;
@@ -12,19 +13,30 @@ if (!userName) {
 const url = `mongodb+srv://${userName}:${password}@${hostname}`;
 
 const client = new MongoClient(url);
-const questionCollection = client.db('Startup').collection('questions');
+const studentCollection = client.db('Startup').collection('students');
 
 //adds one question to the database
-function addQuestion(question) {
-  questionCollection.insertOne(question);
+async function addStudnet(student) {
+  console.log(student.password);
+  const passwordHash = await bcrypt.hash(student.password, 10);
+  
+  const user = {
+    username: student.username,
+    password: passwordHash,
+    token: uuid.v4(),
+  }
+  await studentCollection.insertOne(user);
+  return user;
 }
 
 
-function getQuestion(ID) {
-  let theId = new ObjectId(ID);
-  const query = {_id: theId};
-  const cursor = questionCollection.findOne(query);
-  return cursor;
+function getStudent(studentUser) {
+  //let theId = new ObjectId(ID);
+  console.log(studentUser);
+  const query = {username: studentUser};
+  console.log(query);
+  //const cursor = questionCollection.findOne({_id: new ObjectId(ID)});
+  return studentCollection.find(query);
 }
 
-module.exports = {addQuestion, getQuestion};
+module.exports = {addStudnet, getStudent};

@@ -16,18 +16,25 @@ var apiRouter = express.Router();
 app.use(`/api`, apiRouter);
 
 // Get a single question
-apiRouter.get('/question/:id', async (_req, res) => {
+apiRouter.get('/student/:id', async (_req, res) => {
   console.log(_req.params.id);
-  const question = await DB.getQuestion(_req.params.id);
-  console.log(`here is the ${question}`);
-  res.send(question);
+  const student = await DB.getStudent(_req.params.id);
+  let resp = JSON.stringify(student);
+  console.log(`here is the ${resp}`);
+  res.send(resp);
 });
 
-// Submit a single question
-apiRouter.post('/question', (req, res) => {
-  added = DB.addQuestion(req.body);
-  res.send(added);
+// Submit a single student
+apiRouter.post('/student', async (req, res) => {
+  if (await DB.getUser(req.body.email)) {
+    res.status(409).send({ msg: 'Existing user' });
+  } else{
+    added = DB.addStudnet(req.body);
+    res.send(added);
+  }
 });
+
+// Adding student to the teacher view
 
 // Return the application's default page if the path is unknown
 app.use((_req, res) => {

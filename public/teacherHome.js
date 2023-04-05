@@ -72,18 +72,28 @@ function addStudent(currStu) {
 
 async function readInStudents(){ //going to need to read in the students
     //this will be for testing an enpoint to see if its working
-    const response = await fetch('/api/question/642c97093ec9a7a8d43270e8');//currently has a temporary id
 
-    const newQuestion = { student: "John", body: "What am I supposed to be doing?" };
-    const add = await fetch('/api/question', {      
+    const newStudent = 
+    { 
+    username: "jBoy123",
+    student: "John", 
+    question: "What am I supposed to be doing?" 
+    };
+
+    /*const add = await fetch('/api/student', {      
     method: 'POST',
     headers: { 'content-type': 'application/json' },
-    body: JSON.stringify(newQuestion),
-    })
+    body: JSON.stringify(newStudent),
+    })*/
+
+    const response = await fetch('/api/student/jBoy123');//currently has a temporary id
     console.log("Here is the response!")
     
-    let question = JSON.parse(JSON.stringify(response));
-    console.log(question);
+    
+    let resp = response.json();
+    foo(resp);
+    localStorage.setItem('student', JSON.stringify(resp));
+    console.log({question: resp.username});
     let i = 0;
     reading = 1; 
 
