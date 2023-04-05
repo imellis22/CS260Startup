@@ -1,4 +1,5 @@
 const {MongoClient} = require('mongodb');
+const ObjectId = require('mongodb').ObjectId;
 
 const userName = process.env.MONGOUSER;
 const password = process.env.MONGOPASSWORD;
@@ -11,20 +12,19 @@ if (!userName) {
 const url = `mongodb+srv://${userName}:${password}@${hostname}`;
 
 const client = new MongoClient(url);
-const scoreCollection = client.db('simon').collection('score');
+const questionCollection = client.db('Startup').collection('questions');
 
-function addScore(score) {
-  scoreCollection.insertOne(score);
+//adds one question to the database
+function addQuestion(question) {
+  questionCollection.insertOne(question);
 }
 
-function getHighScores() {
-  const query = {score: {$gt: 0}};
-  const options = {
-    sort: {score: -1},
-    limit: 10,
-  };
-  const cursor = scoreCollection.find(query, options);
-  return cursor.toArray();
+
+function getQuestion(ID) {
+  let theId = new ObjectId(ID);
+  const query = {_id: theId};
+  const cursor = questionCollection.findOne(query);
+  return cursor;
 }
 
-module.exports = {addScore, getHighScores};
+module.exports = {addQuestion, getQuestion};
