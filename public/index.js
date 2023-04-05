@@ -7,6 +7,11 @@ function loginTeacher() {
     window.location.href = "teacherHome.html";
 }
 
+function registerTeacher(){
+
+}
+
+//Student functions
 function loginStudent() {
     const nameEl = document.querySelector("#studentName");
     localStorage.setItem("studentName", nameEl.value);
@@ -16,30 +21,36 @@ function loginStudent() {
         id: numStudents,
         question:""
     }
-    TEACHER.addStudent(newStudent);
+    
     ++numStudents;
-}
-
-function registerTeacher(){
-
 }
 
 async function registerStudent() {
     const nameEl = document.querySelector("#studentName");
-    const passwordEl = document.querySelector("#password");
+    const passwordEl = document.querySelector("#studentPassword");
     localStorage.setItem("studentName", nameEl.value);
     let newStudent =
     {
-        username: nameEl,
-        password: passwordEl,
+        username: nameEl.value,
+        password: passwordEl.value,
         question:""
     }
     
+    //http request to try and register a new student
     const add = await fetch('/api/student', {      
     method: 'POST',
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify(newStudent),
     })
 
-    window.location.href = "studentHome.html";
+    //checks to see if the response from registering a new user is 200
+    console.log(add.status);
+    let status = add.status;
+    console.log(status);
+    if(status === 200){
+        window.location.href = "studentHome.html";
+    }
+    else{
+        window.location.href = "index.html"
+    }
 }

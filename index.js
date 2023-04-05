@@ -1,3 +1,5 @@
+const cookieParser = require('cookie-parser');
+const bcrypt = require('bcrypt');
 const express = require('express');
 const app = express();
 const DB = require('./database.js'); //brings the database.js file into this one
@@ -19,22 +21,40 @@ app.use(`/api`, apiRouter);
 apiRouter.get('/student/:id', async (_req, res) => {
   console.log(_req.params.id);
   const student = await DB.getStudent(_req.params.id);
+  console.log(student.username);
   let resp = JSON.stringify(student);
   console.log(`here is the ${resp}`);
-  res.send(resp);
+  res.send(student);
 });
 
-// Submit a single student
+//Register for a single student
 apiRouter.post('/student', async (req, res) => {
-  if (await DB.getStudent(req.body.email)) {
+  if (await DB.getStudent(req.body.username) != null) {
+    console.log("found existing user");
     res.status(409).send({ msg: 'Existing user' });
   } else{
-    added = DB.addStudnet(req.body);
+    console.log("Adding new student")
+    const added = await DB.addStudnet(req.body);
+
+    //sets the cookie
+    setAuthCookie(res, added.token);
     res.send(added);
   }
 });
 
+//login for a student
+
 // Adding student to the teacher view
+
+
+// setAuthCookie in the HTTP response
+function setAuthCookie(res, authToken) {
+  res.cookie(authCookieName, authToken, {
+    secure: true,
+    httpOnly: true,
+    sameSite: 'strict',
+  });
+}
 
 // Return the application's default page if the path is unknown
 app.use((_req, res) => {

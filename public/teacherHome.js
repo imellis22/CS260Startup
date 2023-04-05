@@ -88,12 +88,10 @@ async function readInStudents(){ //going to need to read in the students
 
     const response = await fetch('/api/student/jBoy123');//currently has a temporary id
     console.log("Here is the response!")
-    
-    
-    let resp = response.json();
-    foo(resp);
+    let resp = await response.json(); // needed an await right here to complete the response.json() before moving on
+
     localStorage.setItem('student', JSON.stringify(resp));
-    console.log({question: resp.username});
+    console.log(resp);
     let i = 0;
     reading = 1; 
 
