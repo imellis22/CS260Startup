@@ -13,18 +13,45 @@ app.use(express.json());
 // Serve up the application's static content
 app.use(express.static('public'));
 
+//tells the file to use the imported cookieParser
+app.use(cookieParser());
+
 // Router for service endpoints
 var apiRouter = express.Router();
 app.use(`/api`, apiRouter);
 
-// Get a single question
-apiRouter.get('/student/:id', async (_req, res) => {
-  console.log(_req.params.id);
+
+let authCookieName = 'token';
+
+// Get a single student, using for logging
+apiRouter.post('/student/:id', async (_req, res) => {
+  console.log(`This is the id ${_req.params.id}`);
   const student = await DB.getStudent(_req.params.id);
+
+  if (student){ //if there is a match to the username;
+    console.log("found a student");
+    if (await bcrypt.compare(_req.body.password, student.password)) { //if the passwords match
+      setAuthCookie(res, student.token);
+      res.send({
+        id: student._id,
+      }); 
+      return;
+    }
+    else{
+      console.log("invalid credentials");
+      res.status(409).send({ msg: 'invalid credentials' })
+    }
+  }
+  else{
+    console.log("invalid credentials");
+    res.status(409).send({ msg: 'invalid credentials' })
+  }
+
+  /* used for debugging
   console.log(student.username);
   let resp = JSON.stringify(student);
   console.log(`here is the ${resp}`);
-  res.send(student);
+  */
 });
 
 //Register for a single student
@@ -34,11 +61,12 @@ apiRouter.post('/student', async (req, res) => {
     res.status(409).send({ msg: 'Existing user' });
   } else{
     console.log("Adding new student")
-    const added = await DB.addStudnet(req.body);
+    const student = await DB.addStudnet(req.body);
 
     //sets the cookie
-    setAuthCookie(res, added.token);
-    res.send(added);
+    setAuthCookie(res, student.token);
+
+    res.send(student);
   }
 });
 
@@ -56,9 +84,16 @@ function setAuthCookie(res, authToken) {
   });
 }
 
+//deletes authToken if stored in a cookie
+apiRouter.delete('/auth/logout', (_req, res) => {
+  console.log('Deleting the cookie')
+  res.clearCookie(authCookieName);
+  res.status(204).end();
+});
+
 // Return the application's default page if the path is unknown
 app.use((_req, res) => {
-  res.sendFile('index.html', { root: 'public' });
+  res.sendFile('login.html', { root: 'public' });
 });
 
 app.listen(port, () => {

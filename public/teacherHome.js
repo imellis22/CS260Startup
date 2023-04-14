@@ -141,5 +141,12 @@ function saveAnswer() {
     localStorage.setItem(`answer${currQuestion}`, answer.value);
 }
 
+//to delete your authToken cookie
+function logout() {
+    fetch(`/api/auth/logout`, {
+      method: 'delete',
+    }).then(() => (window.location.href = '/'));
+}
+
 setName();
 readInStudents();

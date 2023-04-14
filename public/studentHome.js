@@ -22,4 +22,20 @@ async function sendQuestion(){
     })
 }
 
+//to delete your authToken cookie
+async function logout() {
+    console.log("logging out");
+    await fetch(`/api/auth/logout`, {
+        method: 'DELETE',
+    });
+    window.location.href = '/';
+
+
+    /*
+    fetch(`/api/auth/logout`, {
+      method: 'delete',
+    }).then(() => (window.location.href = '/'));
+    */
+}
+
 setName();

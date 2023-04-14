@@ -12,17 +12,31 @@ function registerTeacher(){
 }
 
 //Student functions
-function loginStudent() {
+async function loginStudent() {
     const nameEl = document.querySelector("#studentName");
+    const passwordEl = document.querySelector("#studentPassword");
     localStorage.setItem("studentName", nameEl.value);
-    window.location.href = "studentHome.html";
-    let newStudent =
+    let student =
     {
-        id: numStudents,
-        question:""
+        username: nameEl.value,
+        password: passwordEl.value,
     }
     
-    ++numStudents;
+    //http request to try and register a new student
+    const login = await fetch(`/api/student/${nameEl.value}`, {      
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify(student),
+    })
+    
+    let status = login.status;
+    console.log(status);
+    if(status === 200){
+        window.location.href = "studentHome.html";
+    }
+    else{
+        window.location.href = "index.html"
+    }
 }
 
 async function registerStudent() {
