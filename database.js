@@ -32,6 +32,7 @@ async function addStudnet(student) {
       password: passwordHash,
       classroom: student.classroom,
       logged: 1, //1 means logged in
+      status: 2, //1 means bad, 2 okay, 3 good
       token: uuid.v4(),
       question: "",
     }
@@ -70,14 +71,27 @@ async function getStudent(studentUsername, classroom) {
 
 //logs out a student
 async function updateLogged(studentUsername, classroom, caller){
-  console.log(studentUsername);
-  console.log(caller);
+  // console.log(studentUsername);
+  // console.log(caller);
   const studentCollection = client.db('Startup').collection(`${classroom}`);
-  
+
   await studentCollection.updateOne(
     {username: studentUsername},
     {$set:{logged: caller}}
   )
+}
+
+//Updates a student's status
+async function updateStudentStatus(cookie, classroom, status){
+  const studentCollection = client.db('Startup').collection(`${classroom}`);
+
+  const newStudent = await studentCollection.findOneAndUpdate(
+    {cookie: cookie},
+    { $set: {status: status}},
+    {returnNewDocument: true},
+  )
+
+return newStudent;
 }
 
 //adds a teacher to the database
@@ -106,4 +120,5 @@ async function getTeacher(teacherUsername) {
   return teacher;
 }
 
-module.exports = {addStudnet, getStudent, updateLogged, addTeacher, getTeacher};
+module.exports = {addStudnet, getStudent, updateLogged, addTeacher, getTeacher,
+  updateStudentStatus};

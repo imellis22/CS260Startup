@@ -48,12 +48,6 @@ apiRouter.post('/student/:id', async (_req, res) => {
     console.log("invalid credentials 2");
     res.status(409).send({ msg: 'invalid credentials' })
   }
-
-  /* used for debugging
-  console.log(student.username);
-  let resp = JSON.stringify(student);
-  console.log(`here is the ${resp}`);
-  */
 });
 
 //Register for a single student
@@ -82,6 +76,22 @@ apiRouter.post('/student', async (req, res) => {
     }
   }
 });
+
+//Updates the student status
+apiRouter.post('/student/update', async (req, res) => {
+  console.log("UPDATING STUDENT");
+  const updatedStudent = await DB.updateStudentStatus(req.body.cookie, req.body.classroom, req.body.status);
+  if(updatedStudent.status === req.body.status){
+    res.send({
+      id: updatedStudent._id,
+    }); 
+    return;
+  }
+  else{
+    console.log("Failed to update status");
+    res.status(500).send({ msg: 'Failed to update status' })
+  }
+})
 
 //login for a teacher
 apiRouter.post('/teacher/:id', async (_req, res) => {

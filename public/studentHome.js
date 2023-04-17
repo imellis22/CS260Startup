@@ -22,6 +22,37 @@ async function sendQuestion(){
     })
 }
 
+//Will update the student status
+async function updateStatus(button, status){
+    console.log("UPDATING STATUS")
+    let cookieEl = document.cookie;
+    let classroomEl = localStorage.getItem('classroom');
+    
+    let update = 
+    {
+        cookie: cookieEl,
+        classroom: classroomEl,
+        status: status
+    }
+
+    await fetch(`api/student/update`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(update),
+    })
+
+    const goodButton = document.querySelector("#good");
+    const okayButton = document.querySelector("#okay");
+    const badButton = document.querySelector("#bad");
+
+    goodButton.style.border = "none";
+    okayButton.style.border = "none";
+    badButton.style.border = "none";
+
+    button.style.border = "4px solid black";
+    button.style.color = "black"
+}
+
 //to delete your authToken cookie
 async function logout() {
     console.log("logging out");
