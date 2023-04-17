@@ -56,6 +56,11 @@ apiRouter.post('/student/:id', async (_req, res) => {
 
 //Register for a single student
 apiRouter.post('/student', async (req, res) => {
+  if(req.body.username === '' || req.body.password === '' || req.body.classroom === ''){
+    console.log("Missing required information");
+    res.status(409).send({ msg: 'Missing required infomation'});
+    return;
+  }
   if (await DB.getStudent(req.body.username, req.body.classroom) != null) {
     console.log("found existing user");
     res.status(409).send({ msg: 'Existing user'});
@@ -105,9 +110,9 @@ apiRouter.post('/teacher/:id', async (_req, res) => {
 apiRouter.post('/teacher', async (req, res) => {
   console.log('registering a teacher')
   console.log(req.body.classroom);
-  if(req.body.classroom === ''){
-    console.log('missing classroom');
-    res.status(409).send({msg: 'Missing classroom'});
+  if(req.body.username === '' || req.body.password === '' || req.body.classroom === ''){
+    console.log("Missing required information");
+    res.status(409).send({ msg: 'Missing required infomation'});
     return;
   }
   else if (await DB.getTeacher(req.body.username) != null) {
