@@ -50,18 +50,34 @@ async function getStudent(studentUsername, classroom) {
     console.log(studentUsername);
     const query = {username: studentUsername};
     console.log(query);
-    //const student = await studentCollection.findOne(query);
-    const student = await studentCollection.findOneAndUpdate({
-      query: {username: studentUsername},
-      update: { $inc: {logged: 1}},
-      new: true,
-    })
+    const student = await studentCollection.findOne(query);
+
+    console.log('The student to be returned')
     console.log(student);
     return student;
   }
   else{
     return 0;
   }
+}
+
+// const newStudent = await studentCollection.findOneAndUpdate(
+//   {username: studentUsername},
+//   { $set: {logged: 1}},
+//   {returnNewDocument: true},
+// )
+// return newStudent;
+
+//logs out a student
+async function updateLogged(studentUsername, classroom, caller){
+  console.log(studentUsername);
+  console.log(caller);
+  const studentCollection = client.db('Startup').collection(`${classroom}`);
+  
+  await studentCollection.updateOne(
+    {username: studentUsername},
+    {$set:{logged: caller}}
+  )
 }
 
 //adds a teacher to the database
@@ -90,4 +106,4 @@ async function getTeacher(teacherUsername) {
   return teacher;
 }
 
-module.exports = {addStudnet, getStudent, addTeacher, getTeacher};
+module.exports = {addStudnet, getStudent, updateLogged, addTeacher, getTeacher};

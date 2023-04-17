@@ -25,8 +25,18 @@ async function sendQuestion(){
 //to delete your authToken cookie
 async function logout() {
     console.log("logging out");
+    let usernameEl = localStorage.getItem('studentName');
+    let classroomEl = localStorage.getItem('classroom');
+    
+    let logout =
+    {
+        username: usernameEl,
+        classroom: classroomEl,
+    }
     await fetch(`/api/auth/logout`, {
         method: 'DELETE',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(logout),
     });
     window.location.href = '/';
 

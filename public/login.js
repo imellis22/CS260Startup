@@ -33,6 +33,7 @@ async function registerTeacher(){
     const passwordEl = document.querySelector("#teacherPassword");
     const classroomEl = document.querySelector("#teacherClassroom");
     localStorage.setItem("teacherName", nameEl.value);
+    localStorage.setItem('classroom', classroomEl.value);
     let newTeacher =
     {
         username: nameEl.value,
@@ -65,6 +66,8 @@ async function loginStudent() {
     const passwordEl = document.querySelector("#studentPassword");
     const classroomEl = document.querySelector("#classroomID");
     localStorage.setItem("studentName", nameEl.value);
+    localStorage.setItem('classroom', classroomEl.value);
+    
     let student =
     {
         username: nameEl.value,
@@ -94,6 +97,8 @@ async function registerStudent() {
     const passwordEl = document.querySelector("#studentPassword");
     const classroomEl = document.querySelector("#classroomID");
     localStorage.setItem("studentName", nameEl.value);
+    localStorage.setItem('classroom', classroomEl.value);
+
     let newStudent =
     {
         username: nameEl.value,

@@ -35,6 +35,8 @@ apiRouter.post('/student/:id', async (_req, res) => {
       res.send({
         id: student._id,
       }); 
+
+      DB.updateLogged(_req.body.username, _req.body.classroom, 1);
       return;
     }
     else{
@@ -149,8 +151,10 @@ function setAuthCookie(res, authToken) {
 }
 
 //deletes authToken if stored in a cookie
-apiRouter.delete('/auth/logout', (_req, res) => {
-  console.log('Deleting the cookie')
+apiRouter.delete('/auth/logout', async (_req, res) => {
+  console.log('Deleting the cookie');
+  console.log(_req.body.username);
+  await DB.updateLogged(_req.body.username, _req.body.classroom, 0);
   res.clearCookie(authCookieName);
   res.status(204).end();
 });
