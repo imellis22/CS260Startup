@@ -103,14 +103,18 @@ apiRouter.post('/teacher/:id', async (_req, res) => {
 
 //register a teacher
 apiRouter.post('/teacher', async (req, res) => {
-  if(req.body.classroom === null){
+  console.log('registering a teacher')
+  console.log(req.body.classroom);
+  if(req.body.classroom === ''){
+    console.log('missing classroom');
     res.status(409).send({msg: 'Missing classroom'});
     return;
   }
-  if (await DB.getTeacher(req.body.username) != null) {
+  else if (await DB.getTeacher(req.body.username) != null) {
     console.log("found existing teacher");
     res.status(409).send({ msg: 'Existing user' });
-  } else{
+  } 
+  else{
     console.log("Adding new teacher")
     const teacher = await DB.addTeacher(req.body);
 
