@@ -38,12 +38,12 @@ apiRouter.post('/student/:id', async (_req, res) => {
       return;
     }
     else{
-      console.log("invalid credentials");
+      console.log("invalid credentials 1");
       res.status(409).send({ msg: 'invalid credentials' })
     }
   }
   else{
-    console.log("invalid credentials");
+    console.log("invalid credentials 2");
     res.status(409).send({ msg: 'invalid credentials' })
   }
 
