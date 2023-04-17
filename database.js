@@ -28,6 +28,7 @@ async function addStudnet(student) {
     username: student.username,
     password: passwordHash,
     classroom: student.classroom,
+    status: 1, //1 means logged in
     token: uuid.v4(),
     question: "",
   }
@@ -58,6 +59,7 @@ async function addTeacher(teacher) {
   const user = {
     username: teacher.username,
     password: passwordHash,
+    classroom: teacher.classroom,
     token: uuid.v4(),
   }
   await teacherCollection.insertOne(user);
@@ -65,10 +67,9 @@ async function addTeacher(teacher) {
 }
 
 //finds if a teacher is in the database
-async function getTeacher(teacherUser) {
-  //let theId = new ObjectId(ID);
-  console.log(teacherUser);
-  const query = {username: teacherUser};
+async function getTeacher(teacherUsername) {
+  console.log(teacherUsername);
+  const query = {username: teacherUsername};
   console.log(query);
   const teacher = await teacherCollection.findOne(query);
   console.log(teacher);

@@ -31,11 +31,13 @@ async function loginTeacher() {
 async function registerTeacher(){
     const nameEl = document.querySelector("#teacherName");
     const passwordEl = document.querySelector("#teacherPassword");
+    const classroomEl = document.querySelector("#teacherClassroom");
     localStorage.setItem("teacherName", nameEl.value);
     let newTeacher =
     {
         username: nameEl.value,
         password: passwordEl.value,
+        classroom: classroomEl.value,
     }
     
     //http request to try and register a new teacher
