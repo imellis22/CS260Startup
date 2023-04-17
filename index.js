@@ -61,17 +61,23 @@ apiRouter.post('/student', async (req, res) => {
     res.status(409).send({ msg: 'Missing required infomation'});
     return;
   }
-  if (await DB.getStudent(req.body.username, req.body.classroom) != null) {
+  if (await DB.getStudent(req.body.username, req.body.classroom) != null) { //this also catches if the classromm collection doesn't exist
     console.log("found existing user");
     res.status(409).send({ msg: 'Existing user'});
   } else{
     console.log("Adding new student")
     const student = await DB.addStudnet(req.body);
 
-    //sets the cookie
-    setAuthCookie(res, student.token);
-
-    res.send(student);
+    if(student === 0){
+      console.log('Collection does not exist');
+      res.status(409).send({ msg: 'Collection does not exist'});
+      return;
+    }
+    else{
+      //sets the cookie
+      setAuthCookie(res, student.token);
+      res.send(student);
+    }
   }
 });
 

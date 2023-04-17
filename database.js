@@ -20,34 +20,43 @@ const teacherCollection = client.db('Startup').collection('teachers');
 async function addStudnet(student) {
   console.log("in addStudent");
   const studentCollection = client.db('Startup').collection(`${student.classroom}`);
-  console.log(student);
-  console.log(student.password);
-  const passwordHash = await bcrypt.hash(student.password, 10);
+
+  //checking to see if the collection exists before adding the student
+  if(await client.db('Startup').listCollections({name: student.classroom}).hasNext()){
+    console.log(student);
+    console.log(student.password);
+    const passwordHash = await bcrypt.hash(student.password, 10);
   
-  const user = {
-    username: student.username,
-    password: passwordHash,
-    classroom: student.classroom,
-    status: 1, //1 means logged in
-    token: uuid.v4(),
-    question: "",
+    const user = {
+      username: student.username,
+      password: passwordHash,
+      classroom: student.classroom,
+      status: 1, //1 means logged in
+      token: uuid.v4(),
+      question: "",
+    }
+    await studentCollection.insertOne(user);
+    return user;
   }
-  await studentCollection.insertOne(user);
-  return user;
 }
 
-//finds a student for logining in
+//finds a student for loggining in
 async function getStudent(studentUsername, classroom) {
   console.log("finding a student");
   console.log(classroom);
   const studentCollection = client.db('Startup').collection(`${classroom}`);
-  //let theId = new ObjectId(ID);
-  console.log(studentUsername);
-  const query = {username: studentUsername};
-  console.log(query);
-  const student = await studentCollection.findOne(query);
-  console.log(student);
-  return student;
+  
+  if(await client.db('Startup').listCollections({name: classroom}).hasNext()){
+    console.log(studentUsername);
+    const query = {username: studentUsername};
+    console.log(query);
+    const student = await studentCollection.findOne(query);
+    console.log(student);
+    return student;
+  }
+  else{
+    return 0;
+  }
 }
 
 //adds a teacher to the database
