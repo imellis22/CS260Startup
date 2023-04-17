@@ -26,7 +26,7 @@ let authCookieName = 'token';
 // Get a single student, using for logging
 apiRouter.post('/student/:id', async (_req, res) => {
   console.log(`This is the id ${_req.params.id}`);
-  const student = await DB.getStudent(_req.params.id);
+  const student = await DB.getStudent(_req.params.id, _req.body.classroom);
 
   if (student){ //if there is a match to the username;
     console.log("found a student");
@@ -56,9 +56,9 @@ apiRouter.post('/student/:id', async (_req, res) => {
 
 //Register for a single student
 apiRouter.post('/student', async (req, res) => {
-  if (await DB.getStudent(req.body.username) != null) {
+  if (await DB.getStudent(req.body.username, req.body.classroom) != null) {
     console.log("found existing user");
-    res.status(409).send({ msg: 'Existing user' });
+    res.status(409).send({ msg: 'Existing user'});
   } else{
     console.log("Adding new student")
     const student = await DB.addStudnet(req.body);
@@ -70,7 +70,52 @@ apiRouter.post('/student', async (req, res) => {
   }
 });
 
-//login for a student
+//login for a teacher
+apiRouter.post('/teacher/:id', async (_req, res) => {
+  console.log(`This is the id ${_req.params.id}`);
+  const teacher = await DB.getTeacher(_req.params.id);
+
+  if (teacher){ //if there is a match to the username;
+    console.log("found a teacher");
+    if (await bcrypt.compare(_req.body.password, teacher.password)) { //if the passwords match
+      setAuthCookie(res, teacher.token);
+      res.send({
+        id: teacher._id,
+      }); 
+      return;
+    }
+    else{
+      console.log("invalid credentials");
+      res.status(409).send({ msg: 'invalid credentials' })
+    }
+  }
+  else{
+    console.log("invalid credentials");
+    res.status(409).send({ msg: 'invalid credentials' })
+  }
+
+  /* used for debugging
+  console.log(student.username);
+  let resp = JSON.stringify(student);
+  console.log(`here is the ${resp}`);
+  */
+});
+
+//register a teacher
+apiRouter.post('/teacher', async (req, res) => {
+  if (await DB.getTeacher(req.body.username) != null) {
+    console.log("found existing teacher");
+    res.status(409).send({ msg: 'Existing user' });
+  } else{
+    console.log("Adding new teacher")
+    const teacher = await DB.addTeacher(req.body);
+
+    //sets the cookie
+    setAuthCookie(res, teacher.token);
+
+    res.send(teacher);
+  }
+});
 
 // Adding student to the teacher view
 

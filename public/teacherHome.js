@@ -80,18 +80,11 @@ async function readInStudents(){ //going to need to read in the students
     question: "What am I supposed to be doing?" 
     };
 
-    /*const add = await fetch('/api/student', {      
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify(newStudent),
-    })*/
-
-    const response = await fetch('/api/student/jBoy123');//currently has a temporary id
-    console.log("Here is the response!")
+    /* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     let resp = await response.json(); // needed an await right here to complete the response.json() before moving on
-
-    localStorage.setItem('student', JSON.stringify(resp));
-    console.log(resp);
+    */ 
+    //localStorage.setItem('student', JSON.stringify(resp));
+    
     let i = 0;
     reading = 1; 
 
