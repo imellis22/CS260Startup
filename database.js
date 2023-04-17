@@ -31,7 +31,7 @@ async function addStudnet(student) {
       username: student.username,
       password: passwordHash,
       classroom: student.classroom,
-      status: 1, //1 means logged in
+      logged: 1, //1 means logged in
       token: uuid.v4(),
       question: "",
     }
@@ -50,7 +50,12 @@ async function getStudent(studentUsername, classroom) {
     console.log(studentUsername);
     const query = {username: studentUsername};
     console.log(query);
-    const student = await studentCollection.findOne(query);
+    //const student = await studentCollection.findOne(query);
+    const student = await studentCollection.findOneAndUpdate({
+      query: {username: studentUsername},
+      update: { $inc: {logged: 1}},
+      new: true,
+    })
     console.log(student);
     return student;
   }
