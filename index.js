@@ -178,6 +178,17 @@ apiRouter.post('/students', async (req, res) => {
   res.send(students);
 })
 
+// Update the student with a the answer
+apiRouter.post('/answer', async (req, res) => {
+  console.log(req.body.studentClassroom);
+  console.log(req.cookies[authCookieName]);
+  console.log(req.body.answer);
+  const update = await DB.updateAnswer(req.body.studentClassroom, req.cookies[authCookieName], req.body.answer);
+  res.send({
+    id: update._id,
+  }); 
+})
+
 // setAuthCookie in the HTTP response
 function setAuthCookie(res, authToken) {
   res.cookie(authCookieName, authToken, {

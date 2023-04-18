@@ -138,10 +138,22 @@ async function getUserByToken(token, collection){
 async function getStudents(classroom){
   const studentCollection = client.db('Startup').collection(`${classroom}`);
   const students = await studentCollection.find(
-    {logged: 1}
+    {logged: {$eq: 1}},
+    {token: 0, password: 0}
   )
+
   return students.toArray();
 }
 
+async function updateAnswer(classroom, cookie, answer){
+  const studentCollection = client.db('Startup').collection(`${classroom}`);
+  const modQuestion = await studentCollection.findOneAndUpdate(
+    {token: cookie}, //the query to match
+    {$set: {answer: answer}},
+  )
+
+  return modQuestion;
+}
+
 module.exports = {addStudnet, getStudent, updateLogged, addTeacher, getTeacher,
-  updateStudentStatus, updateQuestion, getUserByToken, getStudents};
+  updateStudentStatus, updateQuestion, getUserByToken, getStudents, updateAnswer};

@@ -75,15 +75,15 @@ body {
  }
 
  .good {
-    background-color: green !important;
+    border-color: green !important;
  }
 
  .bad {
-    background-color: red !important;
+    border-color: red !important;
  }
 
  .okay {
-    background-color: gold !important;
+    border-color: gold !important;
  }
 
  .question{

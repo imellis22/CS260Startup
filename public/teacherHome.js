@@ -21,10 +21,24 @@ function addStudent(currStu) {
 
     theStudent.id = locStudents[currStu].username;
 
+    //need to get the student status to determine what background to have
+    let statusClass;
+    if(locStudents[currStu].status === 1){
+        statusClass = 'bad';
+    }
+    else if(locStudents[currStu].status === 2){
+        statusClass = 'okay';
+    }
+    else if(locStudents[currStu].status === 3){
+        statusClass = 'good';
+    }
+
+
     const studentList = document.querySelector('#main-page');
 
     const student = document.createElement('div'); //the main div for the student
     student.classList.add('student');
+    student.classList.add(`${statusClass}`);
 
     const name = document.createElement('div'); 
     name.classList.add('student-info');
@@ -60,24 +74,10 @@ function addStudent(currStu) {
 
     studentList.appendChild(student);
 
-    //console.log(students[0]);
-    //students.push(theStudent);
-    // if(reading === 0){  // This makes it so the program only increments the number of students and adds to array if not reading in. 
-    //     students.push(theStudent);
-    //     ++numStudents;
-    // }
-    // localStorage.setItem("Students", JSON.stringify(students));
     localStorage.setItem("numStudents", numStudents);
 }
 
-async function readInStudents(){ //going to need to read in the students
-    //this will be for testing an enpoint to see if its working
-
-    /* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    let resp = await response.json(); // needed an await right here to complete the response.json() before moving on
-    */ 
-    //localStorage.setItem('student', JSON.stringify(resp));
-    
+async function readInStudents(){ //going to need to read in the students    
     let i = 0;
     reading = 1; 
 
@@ -132,6 +132,10 @@ function makeModal(clicked){
     console.log(`this is the clicked id ${clicked.id}`);
     const modal = document.getElementById("theModal");
     modal.style.display = "block";
+
+    const modalBody = document.querySelector(".modal-body");
+    modalBody.id = clicked.id;
+
     const question = locStudents[clicked.id].question;
     console.log(question);
     const theQuestion = document.getElementById("theQuestion");
@@ -144,9 +148,24 @@ function closeModal(){
     modal.style.display = "none";
 }
 
-function saveAnswer() {
+async function saveAnswer() {
     const answer = document.getElementById("theAnswer");
-    localStorage.setItem(`answer${currQuestion}`, answer.value);
+    let element = document.querySelector(".modal-body");
+    console.log(element.id);
+    let username = locStudents[element.id].username;
+    let classroom = locStudents[element.id].classroom;
+    let theAnswer = 
+    {
+        answer: answer.value,
+        username: username,
+        classroom: 'teachers',
+        studentClassroom: classroom,
+    }
+    await fetch('/api/answer',  {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(theAnswer),
+    });
 }
 
 //to delete your authToken cookie
