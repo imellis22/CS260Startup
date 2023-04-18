@@ -153,5 +153,14 @@ async function updateAnswer(classroom, cookie, answer){
   return modQuestion;
 }
 
+async function getAnswer(classroom, username){
+  const studentCollection = client.db('Startup').collection(`${classroom}`);
+  const answer = await studentCollection.findOne(
+    {username: username},
+    {answer: 1}
+  )
+  return answer;
+}
+
 module.exports = {addStudnet, getStudent, updateLogged, addTeacher, getTeacher,
-  updateStudentStatus, updateQuestion, getUserByToken, getStudents, updateAnswer};
+  updateStudentStatus, updateQuestion, getUserByToken, getStudents, updateAnswer, getAnswer};

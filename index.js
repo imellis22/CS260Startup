@@ -189,6 +189,12 @@ apiRouter.post('/answer', async (req, res) => {
   }); 
 })
 
+//gets the answer to display for the student
+apiRouter.post('/update/answer', async (req, res) => {
+  const getAnswer = await DB.getAnswer(req.body.classroom, req.body.username);
+  res.send(getAnswer);
+})
+
 // setAuthCookie in the HTTP response
 function setAuthCookie(res, authToken) {
   res.cookie(authCookieName, authToken, {

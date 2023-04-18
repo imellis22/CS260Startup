@@ -101,6 +101,23 @@ async function updateStatus(button, status){
     button.style.color = "black"
 }
 
+// Gets answer from the database
+async function getAnswer(){
+    let usernameEl = localStorage.getItem('studentName');
+    let classroomEl = localStorage.getItem('classroom');
+    
+    let answerReq =
+    {
+        username: usernameEl,
+        classroom: classroomEl,
+    }
+    await fetch(`/api/update/answer`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(answerReq),
+    });
+}
+
 //to delete your authToken cookie
 async function logout() {
     console.log("logging out");
