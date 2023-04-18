@@ -77,28 +77,6 @@ apiRouter.post('/student', async (req, res) => {
   }
 });
 
-//Updates the student status
-apiRouter.post('/student/update/status', async (req, res) => {
-  console.log("UPDATING STUDENT");
-  const updatedStudent = await DB.updateStudentStatus(req.body.username, req.body.classroom, req.body.status);
-
-  res.send({
-    id: updatedStudent._id,
-  }); 
-  return;
-})
-
-//sending a question to the database
-apiRouter.post('/question', async (req, res) => {
-  console.log('ADDING QUESTION');
-  const updatedQuestion = await DB.updateQuestion(req.body.username, req.body.classroom, req.body.question);
-
-  res.send({
-    id: updatedQuestion._id,
-  }); 
-  return;
-})
-
 //login for a teacher
 apiRouter.post('/teacher/:id', async (_req, res) => {
   console.log(`This is the id ${_req.params.id}`);
@@ -154,8 +132,47 @@ apiRouter.post('/teacher', async (req, res) => {
   }
 });
 
+// Get all the students for the teacher view
+apiRouter.get('/students', async (req, res) => {
+  const students = await DB.getStudents(classroom);
+})
 // Adding student to the teacher view
 
+//helps verify credentials for endpoints
+var secureApiRouter = express.Router();
+apiRouter.use(secureApiRouter);
+
+secureApiRouter.use(async (req, res, next) => {
+  authToken = req.cookies[authCookieName];
+  const user = await DB.getUserByToken(authToken);
+  if (user) {
+    next();
+  } else {
+    res.status(401).send({ msg: 'Unauthorized' });
+  }
+});
+
+//Updates the student status
+apiRouter.post('/student/update/status', async (req, res) => {
+  console.log("UPDATING STUDENT");
+  const updatedStudent = await DB.updateStudentStatus(req.body.username, req.body.classroom, req.body.status);
+
+  res.send({
+    id: updatedStudent._id,
+  }); 
+  return;
+})
+
+//sending a question to the database
+apiRouter.post('/question', async (req, res) => {
+  console.log('ADDING QUESTION');
+  const updatedQuestion = await DB.updateQuestion(req.body.username, req.body.classroom, req.body.question);
+
+  res.send({
+    id: updatedQuestion._id,
+  }); 
+  return;
+})
 
 // setAuthCookie in the HTTP response
 function setAuthCookie(res, authToken) {

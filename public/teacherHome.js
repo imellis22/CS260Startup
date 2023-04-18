@@ -73,13 +73,6 @@ function addStudent(currStu) {
 async function readInStudents(){ //going to need to read in the students
     //this will be for testing an enpoint to see if its working
 
-    const newStudent = 
-    { 
-    username: "jBoy123",
-    student: "John", 
-    question: "What am I supposed to be doing?" 
-    };
-
     /* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     let resp = await response.json(); // needed an await right here to complete the response.json() before moving on
     */ 
@@ -90,7 +83,7 @@ async function readInStudents(){ //going to need to read in the students
 
     //Need to check if the array in local storage is null, and if it is don't get it from the storage
     students = JSON.parse(localStorage.getItem('Students'));
-    //console.log(students.length);
+    
     let length;
     if(students !== null){
         length = students.length;

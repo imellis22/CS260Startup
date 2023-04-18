@@ -15,8 +15,9 @@ const url = `mongodb+srv://${userName}:${password}@${hostname}`;
 const client = new MongoClient(url);
 //const studentCollection = client.db('Startup').collection('students');
 const teacherCollection = client.db('Startup').collection('teachers');
+const startUp = client.db('Startup');
 
-//adds a student to the database
+//adds a student to the database for registering
 async function addStudnet(student) {
   console.log("in addStudent");
   const studentCollection = client.db('Startup').collection(`${student.classroom}`);
@@ -63,6 +64,32 @@ async function getStudent(studentUsername, classroom) {
   }
 }
 
+//adds a teacher to the database
+async function addTeacher(teacher) {
+  console.log(teacher);
+  console.log(teacher.password);
+  const passwordHash = await bcrypt.hash(teacher.password, 10);
+  
+  const user = {
+    username: teacher.username,
+    password: passwordHash,
+    classroom: teacher.classroom,
+    token: uuid.v4(),
+  }
+  await teacherCollection.insertOne(user);
+  return user;
+}
+
+//finds if a teacher is in the database
+async function getTeacher(teacherUsername) {
+  console.log(teacherUsername);
+  const query = {username: teacherUsername};
+  console.log(query);
+  const teacher = await teacherCollection.findOne(query);
+  console.log(teacher);
+  return teacher;
+}
+
 // const newStudent = await studentCollection.findOneAndUpdate(
 //   {username: studentUsername},
 //   { $set: {logged: 1}},
@@ -106,31 +133,9 @@ async function updateQuestion(username, classroom, question){
   return modQuestion;
 }
 
-//adds a teacher to the database
-async function addTeacher(teacher) {
-  console.log(teacher);
-  console.log(teacher.password);
-  const passwordHash = await bcrypt.hash(teacher.password, 10);
-  
-  const user = {
-    username: teacher.username,
-    password: passwordHash,
-    classroom: teacher.classroom,
-    token: uuid.v4(),
-  }
-  await teacherCollection.insertOne(user);
-  return user;
-}
-
-//finds if a teacher is in the database
-async function getTeacher(teacherUsername) {
-  console.log(teacherUsername);
-  const query = {username: teacherUsername};
-  console.log(query);
-  const teacher = await teacherCollection.findOne(query);
-  console.log(teacher);
-  return teacher;
+async function getUserByToken(token){
+  return startUp.findOne({token: token});
 }
 
 module.exports = {addStudnet, getStudent, updateLogged, addTeacher, getTeacher,
-  updateStudentStatus, updateQuestion};
+  updateStudentStatus, updateQuestion, getUserByToken};
