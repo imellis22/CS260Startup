@@ -78,19 +78,14 @@ apiRouter.post('/student', async (req, res) => {
 });
 
 //Updates the student status
-apiRouter.post('/student/update', async (req, res) => {
+apiRouter.post('/student/update/status', async (req, res) => {
   console.log("UPDATING STUDENT");
-  const updatedStudent = await DB.updateStudentStatus(req.body.cookie, req.body.classroom, req.body.status);
-  if(updatedStudent.status === req.body.status){
-    res.send({
-      id: updatedStudent._id,
-    }); 
-    return;
-  }
-  else{
-    console.log("Failed to update status");
-    res.status(500).send({ msg: 'Failed to update status' })
-  }
+  const updatedStudent = await DB.updateStudentStatus(req.body.username, req.body.classroom, req.body.status);
+
+  res.send({
+    id: updatedStudent._id,
+  }); 
+  return;
 })
 
 //login for a teacher

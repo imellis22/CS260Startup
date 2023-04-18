@@ -4,7 +4,26 @@ function boldBorder(x) {
 }
 
 function noBorder(x) {
-    x.style.border = "none"
+    let status = localStorage.getItem('status');
+    let current;
+
+    if(status == 1){
+        current = "one"
+    }
+    else if(status == 2){
+        current = "two"
+    }
+    else{
+        current = "three"
+    }
+    
+    if(current == x.id){
+        x.style.border = "4px solid black";
+        x.style.color = "black"
+    }
+    else{
+        x.style.border = "none"
+    }
 }
 
 function setName(){
@@ -24,26 +43,27 @@ async function sendQuestion(){
 
 //Will update the student status
 async function updateStatus(button, status){
-    console.log("UPDATING STATUS")
-    let cookieEl = document.cookie;
+    console.log(`UPDATING STATUS ${status}`);
+    let userName = localStorage.getItem('studentName')
     let classroomEl = localStorage.getItem('classroom');
+    localStorage.setItem('status', status);
     
     let update = 
     {
-        cookie: cookieEl,
+        username: userName,
         classroom: classroomEl,
         status: status
     }
-
-    await fetch(`api/student/update`, {
+    console.log
+    await fetch('/api/student/update/status', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify(update),
     })
 
-    const goodButton = document.querySelector("#good");
-    const okayButton = document.querySelector("#okay");
-    const badButton = document.querySelector("#bad");
+    const goodButton = document.querySelector("#three");
+    const okayButton = document.querySelector("#two");
+    const badButton = document.querySelector("#one");
 
     goodButton.style.border = "none";
     okayButton.style.border = "none";

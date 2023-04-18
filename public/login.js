@@ -67,7 +67,7 @@ async function loginStudent() {
     const classroomEl = document.querySelector("#classroomID");
     localStorage.setItem("studentName", nameEl.value);
     localStorage.setItem('classroom', classroomEl.value);
-    
+
     let student =
     {
         username: nameEl.value,
@@ -109,9 +109,9 @@ async function registerStudent() {
     
     //http request to try and register a new student
     const add = await fetch('/api/student', {      
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify(newStudent),
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(newStudent),
     })
 
     //checks to see if the response from registering a new user is 200

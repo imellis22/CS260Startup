@@ -82,15 +82,16 @@ async function updateLogged(studentUsername, classroom, caller){
 }
 
 //Updates a student's status
-async function updateStudentStatus(cookie, classroom, status){
+async function updateStudentStatus(username, classroom, status){
   const studentCollection = client.db('Startup').collection(`${classroom}`);
 
   const newStudent = await studentCollection.findOneAndUpdate(
-    {cookie: cookie},
+    {username: username},
     { $set: {status: status}},
     {returnNewDocument: true},
   )
 
+  console.log(newStudent.status);
 return newStudent;
 }
 
