@@ -136,12 +136,10 @@ async function getUserByToken(token, collection){
 }
 
 async function getStudents(classroom){
+  console.log("GETTING A STUDENT");
   const studentCollection = client.db('Startup').collection(`${classroom}`);
-  const students = await studentCollection.find(
-    {logged: {$eq: 1}},
-    {token: 0, password: 0}
-  )
-
+  const students = await studentCollection.find({logged: 1}, {"token": 0, "password": 0})
+  
   return students.toArray();
 }
 
