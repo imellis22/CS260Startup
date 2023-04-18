@@ -1,3 +1,5 @@
+
+
 function boldBorder(x) {
     x.style.border = "4px solid black";
     x.style.color = "black"
@@ -105,17 +107,23 @@ async function updateStatus(button, status){
 async function getAnswer(){
     let usernameEl = localStorage.getItem('studentName');
     let classroomEl = localStorage.getItem('classroom');
+    console.log("GETTING ANSWER")
     
     let answerReq =
     {
         username: usernameEl,
         classroom: classroomEl,
     }
-    await fetch(`/api/update/answer`, {
+    const response = await fetch(`/api/update/answer`, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify(answerReq),
     });
+
+    const answer = await response.json();
+    console.log(answer);
+    let answerText = document.querySelector("#studentAnswer");
+    answerText.textContent = answer.answer;
 }
 
 //to delete your authToken cookie
@@ -144,5 +152,30 @@ async function logout() {
     */
 }
 
+async function authenticate(){
+    let classroom = localStorage.getItem('classroom');
+    console.log(classroom);
+    if(classroom === null){
+        window.location.href = '/'
+    }
+    else{
+        let authenticate = {
+            classroom: classroom
+        }
+
+        let auth = await fetch('/api/authenticate', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify(authenticate),
+        });
+
+        if(auth.status !== 200){
+            window.location.href = '/'
+        }
+    }
+}
+
+authenticate();
+getAnswer();
 setName();
 maintainBorder();

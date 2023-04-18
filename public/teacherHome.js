@@ -175,5 +175,29 @@ function logout() {
     }).then(() => (window.location.href = '/'));
 }
 
+async function authenticate(){
+    let classroom = localStorage.getItem('classroom');
+    console.log(classroom);
+    if(classroom === null){
+        window.location.href = '/'
+    }
+    else{
+        let authenticate = {
+            classroom: 'teachers'
+        }
+
+        let auth = await fetch('/api/authenticate', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify(authenticate),
+        });
+
+        if(auth.status !== 200){
+            window.location.href = '/'
+        }
+    }
+}
+
+authenticate();
 setName();
 readInStudents();

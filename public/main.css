@@ -255,6 +255,12 @@ body {
   width: 90%;
   height: 90%;
 }
+
+#studentAnswer{
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
 /*End of modal code*/
   
   @media (max-height: 600px) {

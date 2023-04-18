@@ -213,6 +213,11 @@ apiRouter.delete('/auth/logout', async (_req, res) => {
   res.status(204).end();
 });
 
+//authenticates when a user tries to directly access a page
+apiRouter.post('/authenticate', async (req, res) => {
+  res.status(200).end();
+})
+
 // Return the application's default page if the path is unknown
 app.use((_req, res) => {
   res.sendFile('login.html', { root: 'public' });
