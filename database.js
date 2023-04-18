@@ -15,7 +15,6 @@ const url = `mongodb+srv://${userName}:${password}@${hostname}`;
 const client = new MongoClient(url);
 //const studentCollection = client.db('Startup').collection('students');
 const teacherCollection = client.db('Startup').collection('teachers');
-const startUp = client.db('Startup');
 
 //adds a student to the database for registering
 async function addStudnet(student) {
@@ -99,8 +98,6 @@ async function getTeacher(teacherUsername) {
 
 //logs out a student
 async function updateLogged(studentUsername, classroom, caller){
-  // console.log(studentUsername);
-  // console.log(caller);
   const studentCollection = client.db('Startup').collection(`${classroom}`);
 
   await studentCollection.updateOne(
@@ -133,9 +130,18 @@ async function updateQuestion(username, classroom, question){
   return modQuestion;
 }
 
-async function getUserByToken(token){
-  return startUp.findOne({token: token});
+async function getUserByToken(token, collection){
+  const findCollection = client.db('Startup').collection(`${collection}`);
+  return findCollection.findOne({token: token});
+}
+
+async function getStudents(classroom){
+  const studentCollection = client.db('Startup').collection(`${classroom}`);
+  const students = await studentCollection.find(
+    {logged: 1}
+  )
+  return students.toArray();
 }
 
 module.exports = {addStudnet, getStudent, updateLogged, addTeacher, getTeacher,
-  updateStudentStatus, updateQuestion, getUserByToken};
+  updateStudentStatus, updateQuestion, getUserByToken, getStudents};

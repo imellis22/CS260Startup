@@ -26,6 +26,24 @@ function noBorder(x) {
     }
 }
 
+function maintainBorder(){
+    let status = localStorage.getItem('status');
+    let button;
+
+    if(status == 1){
+        button = document.querySelector("#one")
+    }
+    else if(status == 2){
+        button = document.querySelector("#two")
+    }
+    else{
+        button = document.querySelector("#three")
+    }
+
+    button.style.border = "4px solid black";
+    button.style.color = "black"
+}
+
 function setName(){
     const userName = document.querySelector('#studentName');
     userName.textContent = "Welcome " + localStorage.getItem('studentName');
@@ -44,7 +62,7 @@ async function sendQuestion(){
         question: question.value,
     }
     console.log(question.value);
-    await fetch('/api/question', {      
+    await fetch(`/api/question`, {      
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify(newQuestion),
@@ -65,7 +83,7 @@ async function updateStatus(button, status){
         status: status
     }
     console.log
-    await fetch('/api/student/update/status', {
+    await fetch(`/api/status`, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify(update),
@@ -110,3 +128,4 @@ async function logout() {
 }
 
 setName();
+maintainBorder();

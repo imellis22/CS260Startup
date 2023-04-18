@@ -132,19 +132,17 @@ apiRouter.post('/teacher', async (req, res) => {
   }
 });
 
-// Get all the students for the teacher view
-apiRouter.get('/students', async (req, res) => {
-  const students = await DB.getStudents(classroom);
-})
-// Adding student to the teacher view
-
 //helps verify credentials for endpoints
 var secureApiRouter = express.Router();
 apiRouter.use(secureApiRouter);
 
 secureApiRouter.use(async (req, res, next) => {
+  console.log("IN AUTHENTICATION")
   authToken = req.cookies[authCookieName];
-  const user = await DB.getUserByToken(authToken);
+  console.log(authToken);
+
+  const user = await DB.getUserByToken(authToken, req.body.classroom);
+
   if (user) {
     next();
   } else {
@@ -153,7 +151,7 @@ secureApiRouter.use(async (req, res, next) => {
 });
 
 //Updates the student status
-apiRouter.post('/student/update/status', async (req, res) => {
+apiRouter.post('/status', async (req, res) => {
   console.log("UPDATING STUDENT");
   const updatedStudent = await DB.updateStudentStatus(req.body.username, req.body.classroom, req.body.status);
 
@@ -172,6 +170,12 @@ apiRouter.post('/question', async (req, res) => {
     id: updatedQuestion._id,
   }); 
   return;
+})
+
+// Get all the students for the teacher view
+apiRouter.post('/students', async (req, res) => {
+  const students = await DB.getStudents(req.body.studentClassroom);
+  res.send(students);
 })
 
 // setAuthCookie in the HTTP response

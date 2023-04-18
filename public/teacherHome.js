@@ -1,5 +1,5 @@
 let numStudents = 0;
-let students = []; 
+let locStudents = []; 
 const theStudent = 
 {
     id: 0,
@@ -12,14 +12,14 @@ let reading = 0;
 function addStudent(currStu) {
     const theStudent = new Object();
     let currValue; 
-    if(reading === 0){
-        currValue = numStudents;
-    }
-    else if(reading === 1){
-        currValue = currStu;
-    }
+    // if(reading === 0){
+    //     currValue = numStudents;
+    // }
+    // else if(reading === 1){
+    //     currValue = currStu;
+    // }
 
-    theStudent.id = currValue;
+    theStudent.id = locStudents[currStu].username;
 
     const studentList = document.querySelector('#main-page');
 
@@ -28,15 +28,15 @@ function addStudent(currStu) {
 
     const name = document.createElement('div'); 
     name.classList.add('student-info');
-    name.textContent = "Student Name"; 
+    name.textContent = locStudents[currStu].username; 
 
     const question = document.createElement('div');
     question.classList.add('question');
-    question.textContent = `Question will go here ${currValue}`;
+    question.textContent = locStudents[currStu].question;
     theStudent.question = question.textContent;
 
-    console.log(theStudent.id);
-    console.log(theStudent.question);
+    // console.log(theStudent.id);
+    // console.log(theStudent.question);
 
     name.appendChild(question); //adds the question child to the name div
 
@@ -48,7 +48,7 @@ function addStudent(currStu) {
     const responseButton = document.createElement('button');
 
     responseButton.classList.add('btn', 'btn-primary', 'response-btn');
-    responseButton.id = currValue;
+    responseButton.id = currStu;
     responseButton.textContent = "Give Answer";
     responseButton.setAttribute("onclick","makeModal(this)");
 //    responseButton.onclick = "makeModal(this)"; ///////
@@ -60,13 +60,13 @@ function addStudent(currStu) {
 
     studentList.appendChild(student);
 
-    console.log(students[0]);
+    //console.log(students[0]);
     //students.push(theStudent);
-    if(reading === 0){  // This makes it so the program only increments the number of students and adds to array if not reading in. 
-        students.push(theStudent);
-        ++numStudents;
-    }
-    localStorage.setItem("Students", JSON.stringify(students));
+    // if(reading === 0){  // This makes it so the program only increments the number of students and adds to array if not reading in. 
+    //     students.push(theStudent);
+    //     ++numStudents;
+    // }
+    // localStorage.setItem("Students", JSON.stringify(students));
     localStorage.setItem("numStudents", numStudents);
 }
 
@@ -81,15 +81,37 @@ async function readInStudents(){ //going to need to read in the students
     let i = 0;
     reading = 1; 
 
+    let students = [];
+
+    let studentClassroom = localStorage.getItem('classroom');
+
+    let info = 
+    {
+        classroom: "teachers",
+        studentClassroom: studentClassroom,
+    }
+    const response = await fetch('/api/students', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(info),
+    });
+    students = await response.json();
+
+    localStorage.setItem('students', JSON.stringify(students));
+
+    let studentText = localStorage.getItem('students');
+    locStudents = JSON.parse(studentText);
     //Need to check if the array in local storage is null, and if it is don't get it from the storage
-    students = JSON.parse(localStorage.getItem('Students'));
+    //students = JSON.parse(localStorage.getItem('Students'));
     
     let length;
-    if(students !== null){
-        length = students.length;
+    if(locStudents !== null){
+        length = locStudents.length;
+        console.log(`THIS IS THE LENGTH ${length}`);
+        console.log(locStudents[0].status);
     }
     else{
-        students = [];
+        locStudents = [];
         length = 0;
     }
     while(i < length){
@@ -110,7 +132,7 @@ function makeModal(clicked){
     console.log(`this is the clicked id ${clicked.id}`);
     const modal = document.getElementById("theModal");
     modal.style.display = "block";
-    const question = students[clicked.id].question;
+    const question = locStudents[clicked.id].question;
     console.log(question);
     const theQuestion = document.getElementById("theQuestion");
     theQuestion.textContent = `${question}`;
