@@ -88,6 +88,17 @@ apiRouter.post('/student/update/status', async (req, res) => {
   return;
 })
 
+//sending a question to the database
+apiRouter.post('/question', async (req, res) => {
+  console.log('ADDING QUESTION');
+  const updatedQuestion = await DB.updateQuestion(req.body.username, req.body.classroom, req.body.question);
+
+  res.send({
+    id: updatedQuestion._id,
+  }); 
+  return;
+})
+
 //login for a teacher
 apiRouter.post('/teacher/:id', async (_req, res) => {
   console.log(`This is the id ${_req.params.id}`);

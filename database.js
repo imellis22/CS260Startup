@@ -95,6 +95,16 @@ async function updateStudentStatus(username, classroom, status){
 return newStudent;
 }
 
+async function updateQuestion(username, classroom, question){
+  const studentCollection = client.db('Startup').collection(`${classroom}`);
+  const modQuestion = await studentCollection.findOneAndUpdate(
+    {username: username}, //the query to match
+    {$set: {question: question}},
+  )
+
+  return modQuestion;
+}
+
 //adds a teacher to the database
 async function addTeacher(teacher) {
   console.log(teacher);
@@ -122,4 +132,4 @@ async function getTeacher(teacherUsername) {
 }
 
 module.exports = {addStudnet, getStudent, updateLogged, addTeacher, getTeacher,
-  updateStudentStatus};
+  updateStudentStatus, updateQuestion};
