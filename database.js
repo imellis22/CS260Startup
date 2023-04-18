@@ -35,6 +35,7 @@ async function addStudnet(student) {
       status: 2, //1 means bad, 2 okay, 3 good
       token: uuid.v4(),
       question: "",
+      answer: "",
     }
     await studentCollection.insertOne(user);
     return user;
