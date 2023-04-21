@@ -9,9 +9,9 @@ HTTP 300 status codes are for redirecting and caching
 HTTP 400 status codes are for user error
 HTTP 500 status codes are for server side errors
 LANGUAGE is not a standard HTTP header. Some standard headers include Content-type, Host, and cookie.   
-Cookies allow the server to store data on the client.   
-Web sockets allows for peer to peer communication instead of client to server. 
-The purpose of JSX is to inject HTML into Javascript, componentize HTML, and allow for composability of HTML. 
-Using the command "NPM install ws" will lock the version of the websocket package for the application, add the websocket source code to the node_modules directory, and adds a dependency to your package.json file. 
-It is true that you can use fetch in front end and back end code. 
-A linux daemon can execute independent of a user, starts when the computer os rebooted, PM2 is an example of a daemon, and can fork other processes. 
+Cookies allow the server to store data on the client.      
+Web sockets allows for peer to peer communication instead of client to server.    
+The purpose of JSX is to inject HTML into Javascript, componentize HTML, and allow for composability of HTML.    
+Using the command "NPM install ws" will lock the version of the websocket package for the application, add the websocket source code to the node_modules directory, and adds a dependency to your package.json file.    
+It is true that you can use fetch in front end and back end code.    
+A linux daemon can execute independent of a user, starts when the computer os rebooted, PM2 is an example of a daemon, and can fork other processes.    
