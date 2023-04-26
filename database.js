@@ -143,14 +143,18 @@ async function getStudents(classroom){
   return students.toArray();
 }
 
-async function updateAnswer(classroom, cookie, answer){
+async function updateAnswer(classroom, userName, answer){
+  console.log("In database updating answer")
+  console.log(`${classroom}`)
+  console.log(`${answer}`)
+  console.log(`${userName}`)
   const studentCollection = client.db('Startup').collection(`${classroom}`);
-  const modQuestion = await studentCollection.findOneAndUpdate(
-    {token: cookie}, //the query to match
+  const modAnswer = await studentCollection.findOneAndUpdate(
+    {username: userName}, //the query to match
     {$set: {answer: answer}},
   )
 
-  return modQuestion;
+  return modAnswer;
 }
 
 async function getAnswer(classroom, username){

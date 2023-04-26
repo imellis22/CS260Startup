@@ -26,9 +26,6 @@
               <li class="nav-item">
                 <a class="nav-link" href="support.html">Contact Us</a>
               </li>
-              <li>
-                <button type="button"  onclick="addStudent()" class="btn" style="color: white">Add student</button>
-              </li>
             </menu>
             <div class="text-end">
                 <a class="nav-link" href="index.html">
@@ -52,7 +49,7 @@
                   <div style="height: 70%;">
                     <textarea type="text" id="theAnswer" name="theAnswer" placeholder="Enter answer here"></textarea>
                   </div>
-                  <button type="submit" onclick="saveAnswer()" class="btn btn-primary response-btn">Give Answer</button>
+                  <button type="submit" onclick="saveAnswer(), closeModal()" class="btn btn-primary response-btn">Give Answer</button>
                 </div>
               </div>
               <!--

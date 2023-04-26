@@ -153,6 +153,7 @@ async function saveAnswer() {
     let element = document.querySelector(".modal-body");
     console.log(element.id);
     let username = locStudents[element.id].username;
+    //console.log(`The students username ${username}`);
     let classroom = locStudents[element.id].classroom;
     let theAnswer = 
     {

@@ -114,7 +114,8 @@ async function getAnswer(){
         username: usernameEl,
         classroom: classroomEl,
     }
-    const response = await fetch(`/api/update/answer`, {
+    
+    const response = await fetch(`/api/find/answer`, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify(answerReq),
@@ -131,12 +132,14 @@ async function logout() {
     console.log("logging out");
     let usernameEl = localStorage.getItem('studentName');
     let classroomEl = localStorage.getItem('classroom');
+    await wipeAnswer();
     
     let logout =
     {
         username: usernameEl,
         classroom: classroomEl,
     }
+
     await fetch(`/api/auth/logout`, {
         method: 'DELETE',
         headers: { 'content-type': 'application/json' },
@@ -150,6 +153,22 @@ async function logout() {
       method: 'delete',
     }).then(() => (window.location.href = '/'));
     */
+}
+
+async function wipeAnswer(){
+    let classroomEl = localStorage.getItem('classroom');
+
+    let wipeAnswer = 
+    {
+        studentClassroom: classroomEl, 
+        answer: "",
+    }
+
+    await fetch('/api/answer', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(wipeAnswer),
+    });
 }
 
 async function authenticate(){

@@ -137,9 +137,9 @@ var secureApiRouter = express.Router();
 apiRouter.use(secureApiRouter);
 
 secureApiRouter.use(async (req, res, next) => {
-  console.log("IN AUTHENTICATION")
+  //console.log("IN AUTHENTICATION")
   authToken = req.cookies[authCookieName];
-  console.log(authToken);
+  //console.log(authToken);
 
   const user = await DB.getUserByToken(authToken, req.body.classroom);
 
@@ -180,17 +180,18 @@ apiRouter.post('/students', async (req, res) => {
 
 // Update the student with a the answer
 apiRouter.post('/answer', async (req, res) => {
-  console.log(req.body.studentClassroom);
-  console.log(req.cookies[authCookieName]);
-  console.log(req.body.answer);
-  const update = await DB.updateAnswer(req.body.studentClassroom, req.cookies[authCookieName], req.body.answer);
+  console.log("ABOUT TO UPDATE THE ANSWER")
+  // console.log(req.body.studentClassroom);
+  // console.log(req.cookies[authCookieName]);
+  // console.log(req.body.answer);
+  const update = await DB.updateAnswer(req.body.studentClassroom, req.body.username, req.body.answer);
   res.send({
     id: update._id,
   }); 
 })
 
 //gets the answer to display for the student
-apiRouter.post('/update/answer', async (req, res) => {
+apiRouter.post('/find/answer', async (req, res) => {
   const getAnswer = await DB.getAnswer(req.body.classroom, req.body.username);
   res.send(getAnswer);
 })
