@@ -2,7 +2,7 @@
 
 Getting to build the entire web application was really helpful. Getting to better understand the way endpoints work in relationship with the browser and the database made it so much easier to get information from the database to the browser. It was also really nice to get to get a better understanding of what was actually happening with a request. Understanding how the body of the request was formatted made it a lot easier to get parameters for the database to the functions from the browser. Also, it was very satisfying to get the endpoints connected with the database and then have my database update. I also get a much better understanding of some of the things you can do with Javascript, just because I had to work with it more to get everything set up. I've taken some web technology classes before, but this assignment helped a lot of different topics, such as node.js and https requests make a lot more sense. 
 
-To Lauch a new version to my website: ./deployService.sh -k <yourpemkey> -h <yourdomain> -s startup
+To Lauch a new version to my website: ./deployService.sh -k <yourpemkey> -h <yourdomain> -s startup   
   for example: ./deployService.sh -k ~/keys/production.pem -h yourdomain.click -s startup
 
 # Final Review
